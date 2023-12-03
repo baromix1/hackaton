@@ -107,7 +107,12 @@ const FinalItem = () => {
               )}
               {fetchedData[3] && (
                 <>
-                  <a href={fetchedData[3]} target="_blank" rel="noreferrer">
+                  <a
+                    href={fetchedData[3]}
+                    target="_blank"
+                    rel="noreferrer"
+                    style={{ color: theme.palette.secondary.main }}
+                  >
                     [Link] Nota katalogowa
                   </a>
                   <Divider sx={{ marginTop: 2, marginBottom: 2 }} />
@@ -118,7 +123,12 @@ const FinalItem = () => {
               )}
               {fetchedData[4] && (
                 <>
-                  <a href={fetchedData[4]} target="_blank" rel="noreferrer">
+                  <a
+                    href={fetchedData[4]}
+                    target="_blank"
+                    rel="noreferrer"
+                    style={{ color: theme.palette.secondary.main }}
+                  >
                     [Link] Nota katalogowa
                   </a>
                   <Divider sx={{ marginTop: 2, marginBottom: 2 }} />
@@ -129,7 +139,12 @@ const FinalItem = () => {
               )}
               {fetchedData[5] && (
                 <>
-                  <a href={fetchedData[5]} target="_blank" rel="noreferrer">
+                  <a
+                    href={fetchedData[5]}
+                    target="_blank"
+                    rel="noreferrer"
+                    style={{ color: theme.palette.secondary.main }}
+                  >
                     [Link] Nota katalogowa
                   </a>
                   <Divider sx={{ marginTop: 2, marginBottom: 2 }} />
@@ -157,28 +172,49 @@ const FinalItem = () => {
               prad: calcValCtx.current,
               cosphi: calcValCtx.cosphi,
             };
-            console.log(body);
 
             setIsLoading(true);
             fetch(
-              `http://localhost:3001/logic?metal=${body.metal}&izolacja=${body.izolacja}&zyly_obc=${body.zyly_obj["zyly_obc"]}&zyly=${body.zyly_obj["zyly"]}&faza=${body.zyly_obj["faza"]}&sposob_instalacji=${body.sposob_instalacji}&temperatura=${body.temperatura}&rezystancja_cieplna=${body.rezystancja_cieplna}&ilosc_przewodow=${body.ilosc_przewodow}&moc=${body.moc}&prad=${body.prad}&cosphi=${body.cosphi}`,
+              `https://cablestooltip.lm.r.appspot.com/logic?metal=${body.metal}&izolacja=${body.izolacja}&zyly_obc=${body.zyly_obj["zyly_obc"]}&zyly=${body.zyly_obj["zyly"]}&faza=${body.zyly_obj["faza"]}&sposob_instalacji=${body.sposob_instalacji}&temperatura=${body.temperatura}&rezystancja_cieplna=${body.rezystancja_cieplna}&ilosc_przewodow=${body.ilosc_przewodow}&moc=${body.moc}&prad=${body.prad}&cosphi=${body.cosphi}`,
               {
                 method: "GET",
+                mode: "no-cors",
+                headers: {
+                  "Access-Control-Allow-Origin": "*",
+                },
               }
             )
               .then((res) => res.json())
               .then((data) => {
                 setFetchedData(data);
-                console.log(data);
+                localStorage.setItem(
+                  "lastCalc",
+                  JSON.stringify([
+                    ...calcValCtx.getAll(),
+                    data[0],
+                    data[1],
+                    data[2],
+                    data[3],
+                    data[4],
+                    data[5],
+                  ])
+                );
               })
               .catch((err) => {
                 setFetchedData("Nie udało się załadować wyniku :(");
                 console.log(err);
               })
-              .finally(setIsLoading(false));
+              .finally(() => {
+                setIsLoading(false);
+                console.log("Saved calculations as a last entry");
+              });
           }}
         >
-          {isLoading ? <CircularProgress color="white" /> : "Zatwiedź"}
+          {isLoading ? (
+            <CircularProgress sx={{ color: "white" }} />
+          ) : (
+            "Zatwiedź"
+          )}
         </Button>
       </Box>
     </Box>
