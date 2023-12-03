@@ -18,7 +18,7 @@ app.listen(port, () => {
   console.log("hejka");
 });
 
-app.get("https://cable-master.onrender.com", (req, res) => {
+app.get("https://handy-cables.onrender.com", (req, res) => {
   console.log("hello");
   let kabel = "";
   let kabel2 = "";
