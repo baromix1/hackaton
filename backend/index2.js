@@ -18,7 +18,7 @@ app.listen(port, () => {
   console.log("hejka");
 });
 
-app.get("/logic", (req, res) => {
+app.get("https://cable-master.onrender.com", (req, res) => {
   console.log("hello");
   let kabel = "";
   let kabel2 = "";
@@ -336,6 +336,4 @@ app.get("/logic", (req, res) => {
   res.json(tab);
   console.log(koniec);
 });
-app.get("/logic", (res, req) => {
-  console.log("hej");
-});
+
